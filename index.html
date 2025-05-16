@@ -3,12 +3,13 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>セドナメソッド・ドリル</title>
+  <title>セドナメソッド・ドリル（改良版）</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     html, body {
       font-family: sans-serif;
-      background-color: #f4f4f4;
+      background-color: #121212;
+      color: #eeeeee;
       margin: 0;
       height: 100%;
       display: flex;
@@ -21,10 +22,10 @@
       align-items: center;
     }
     #question-box {
-      background: white;
+      background: #1e1e1e;
       padding: 2rem;
       border-radius: 1rem;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
       text-align: center;
       width: 90vw;
       max-width: 600px;
@@ -42,26 +43,38 @@
       top: 1rem;
       right: 1rem;
       font-weight: bold;
-      background: #fff3;
+      background: #2a2a2a;
+      color: #ffffff;
       padding: 0.5rem 1rem;
       border-radius: 1rem;
     }
     button {
       font-size: 1.2rem;
       padding: 0.5rem 2rem;
+      margin: 0.25rem;
       border: none;
-      background-color: #4caf50;
+      background-color: #388e3c;
       color: white;
       border-radius: 0.5rem;
       cursor: pointer;
     }
     button:hover {
-      background-color: #45a049;
+      background-color: #2e7d32;
+    }
+    .controls {
+      margin-top: 1rem;
     }
   </style>
 </head>
 <body>
-  <div id="counter">手放した回数: <span id="release-count">0</span></div>
+  <div id="counter">
+    手放した回数: <span id="release-count">0</span>
+    <div class="controls">
+      <button onclick="adjustCount(-1)">－</button>
+      <button onclick="adjustCount(1)">＋</button>
+      <button onclick="resetCount()">リセット</button>
+    </div>
+  </div>
   <div id="app">
     <div id="question-box">
       <div id="question"></div>
@@ -77,11 +90,11 @@
         "今この瞬間だけでも、その思いを手放してみませんか？"
       ];
 
-      let step = 0;
+      let step = -1;
       let releaseCount = parseInt(localStorage.getItem('releaseCount') || '0');
       const questionEl = document.getElementById('question');
-      const button = document.getElementById('next-button');
       const countEl = document.getElementById('release-count');
+      const button = document.getElementById('next-button');
 
       function updateCounter() {
         countEl.textContent = releaseCount;
@@ -89,20 +102,36 @@
       }
 
       function nextQuestion() {
-        if (step < questions.length - 1) {
-          step++;
-        } else {
-          step = 0;
+        step++;
+        if (step === 0) {
+          questionEl.textContent = `${releaseCount + 1}回目`;
+        } else if (step <= questions.length) {
+          questionEl.textContent = questions[step - 1];
+        }
+        if (step > questions.length) {
           releaseCount++;
           updateCounter();
+          step = -1;
+          nextQuestion();
         }
-        questionEl.textContent = questions[step];
       }
 
       button.addEventListener('click', nextQuestion);
-      questionEl.textContent = questions[step];
       updateCounter();
+      nextQuestion();
     });
+
+    function adjustCount(delta) {
+      releaseCount = Math.max(0, releaseCount + delta);
+      localStorage.setItem('releaseCount', releaseCount);
+      document.getElementById('release-count').textContent = releaseCount;
+    }
+
+    function resetCount() {
+      releaseCount = 0;
+      localStorage.setItem('releaseCount', releaseCount);
+      document.getElementById('release-count').textContent = releaseCount;
+    }
   </script>
 </body>
 </html>

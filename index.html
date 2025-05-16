@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>セドナメソッド・ドリル（修正版）</title>
+  <title>セドナメソッド・ドリル（安定版）</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     html, body {
@@ -105,10 +106,14 @@
       localStorage.setItem('releaseCount', releaseCount);
     }
 
+    function showRound() {
+      questionEl.textContent = `${releaseCount + 1}回目`;
+    }
+
     function nextQuestion() {
       step++;
       if (step === 0) {
-        questionEl.textContent = `${releaseCount + 1}回目`;
+        showRound();
       } else if (step <= questions.length) {
         questionEl.textContent = questions[step - 1];
       }
@@ -123,13 +128,15 @@
     function adjustCount(delta) {
       releaseCount = Math.max(0, releaseCount + delta);
       updateCounter();
+      step = 0;
+      showRound();
     }
 
     function resetCount() {
       releaseCount = 0;
-      step = -1;
       updateCounter();
-      nextQuestion();
+      step = 0;
+      showRound();
     }
 
     document.addEventListener('DOMContentLoaded', () => {

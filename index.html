@@ -6,24 +6,27 @@
   <title>セドナメソッド・ドリル</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
+    html, body {
       font-family: sans-serif;
       background-color: #f4f4f4;
       margin: 0;
-      padding: 2rem 1rem;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #app {
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 100vh;
-      box-sizing: border-box;
     }
     #question-box {
       background: white;
-      padding: 1.5rem;
+      padding: 2rem;
       border-radius: 1rem;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
       text-align: center;
-      width: 100%;
+      width: 90vw;
       max-width: 600px;
     }
     #question {
@@ -59,9 +62,11 @@
 </head>
 <body>
   <div id="counter">手放した回数: <span id="release-count">0</span></div>
-  <div id="question-box">
-    <div id="question"></div>
-    <button id="next-button">次へ</button>
+  <div id="app">
+    <div id="question-box">
+      <div id="question"></div>
+      <button id="next-button">次へ</button>
+    </div>
   </div>
 
   <script>

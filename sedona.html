@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>セドナメソッド・ドリル</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+    #question-box {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 100%;
+      max-width: 600px;
+    }
+    #question {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      min-height: 4em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #counter {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      font-weight: bold;
+      background: #fff3;
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+    }
+    button {
+      font-size: 1.2rem;
+      padding: 0.5rem 2rem;
+      border: none;
+      background-color: #4caf50;
+      color: white;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div id="counter">手放した回数: <span id="release-count">0</span></div>
+  <div id="question-box">
+    <div id="question"></div>
+    <button id="next-button">次へ</button>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const questions = [
+        "どんな願いでも叶うとしたら──何を望みますか？",
+        "なぜ、それを望むのでしょうか？",
+        "今この瞬間だけでも、その思いを手放してみませんか？"
+      ];
+
+      let step = 0;
+      let releaseCount = parseInt(localStorage.getItem('releaseCount') || '0');
+      const questionEl = document.getElementById('question');
+      const button = document.getElementById('next-button');
+      const countEl = document.getElementById('release-count');
+
+      function updateCounter() {
+        countEl.textContent = releaseCount;
+        localStorage.setItem('releaseCount', releaseCount);
+      }
+
+      function nextQuestion() {
+        if (step < questions.length - 1) {
+          step++;
+        } else {
+          step = 0;
+          releaseCount++;
+          updateCounter();
+        }
+        questionEl.textContent = questions[step];
+      }
+
+      button.addEventListener('click', nextQuestion);
+      questionEl.textContent = questions[step];
+      updateCounter();
+    });
+  </script>
+</body>
+</html>

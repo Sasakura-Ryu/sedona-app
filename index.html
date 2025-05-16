@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>セドナメソッド・ドリル（改良バランス版）</title>
+  <title>セドナメソッド・ドリル（修正版）</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     html, body {
@@ -88,55 +87,56 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const questions = [
-        "どんな願いでも叶うとしたら──何を望みますか？",
-        "なぜ、それを望むのでしょうか？",
-        "今この瞬間だけでも、その思いを手放してみませんか？"
-      ];
+    let step = -1;
+    let releaseCount = parseInt(localStorage.getItem('releaseCount') || '0');
 
-      let step = -1;
-      let releaseCount = parseInt(localStorage.getItem('releaseCount') || '0');
-      const questionEl = document.getElementById('question');
-      const countEl = document.getElementById('release-count');
-      const button = document.getElementById('next-button');
+    const questionEl = document.getElementById('question');
+    const countEl = document.getElementById('release-count');
+    const button = document.getElementById('next-button');
 
-      function updateCounter() {
-        countEl.textContent = releaseCount;
-        localStorage.setItem('releaseCount', releaseCount);
+    const questions = [
+      "どんな願いでも叶うとしたら──何を望みますか？",
+      "なぜ、それを望むのでしょうか？",
+      "今この瞬間だけでも、その思いを手放してみませんか？"
+    ];
+
+    function updateCounter() {
+      countEl.textContent = releaseCount;
+      localStorage.setItem('releaseCount', releaseCount);
+    }
+
+    function nextQuestion() {
+      step++;
+      if (step === 0) {
+        questionEl.textContent = `${releaseCount + 1}回目`;
+      } else if (step <= questions.length) {
+        questionEl.textContent = questions[step - 1];
       }
-
-      function nextQuestion() {
-        step++;
-        if (step === 0) {
-          questionEl.textContent = `${releaseCount + 1}回目`;
-        } else if (step <= questions.length) {
-          questionEl.textContent = questions[step - 1];
-        }
-        if (step > questions.length) {
-          releaseCount++;
-          updateCounter();
-          step = -1;
-          nextQuestion();
-        }
+      if (step > questions.length) {
+        releaseCount++;
+        updateCounter();
+        step = -1;
+        nextQuestion();
       }
-
-      button.addEventListener('click', nextQuestion);
-      updateCounter();
-      nextQuestion();
-    });
+    }
 
     function adjustCount(delta) {
       releaseCount = Math.max(0, releaseCount + delta);
-      localStorage.setItem('releaseCount', releaseCount);
-      document.getElementById('release-count').textContent = releaseCount;
+      updateCounter();
     }
 
     function resetCount() {
       releaseCount = 0;
-      localStorage.setItem('releaseCount', releaseCount);
-      document.getElementById('release-count').textContent = releaseCount;
+      step = -1;
+      updateCounter();
+      nextQuestion();
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateCounter();
+      nextQuestion();
+      button.addEventListener('click', nextQuestion);
+    });
   </script>
 </body>
 </html>

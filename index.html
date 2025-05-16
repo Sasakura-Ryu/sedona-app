@@ -3,7 +3,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>セドナメソッド・ドリル（改良版）</title>
+  <title>セドナメソッド・ドリル（改良バランス版）</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     html, body {
@@ -11,18 +11,18 @@
       background-color: #121212;
       color: #eeeeee;
       margin: 0;
+      padding: 0;
       height: 100%;
       display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    #app {
-      display: flex;
       flex-direction: column;
+      justify-content: space-between;
       align-items: center;
+      box-sizing: border-box;
     }
     #question-box {
       background: #1e1e1e;
+      margin-top: auto;
+      margin-bottom: auto;
       padding: 2rem;
       border-radius: 1rem;
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
@@ -38,20 +38,26 @@
       align-items: center;
       justify-content: center;
     }
+    #counter-panel {
+      width: 100%;
+      padding: 1rem;
+      background: #1c1c1c;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-top: 1px solid #333;
+    }
     #counter {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
       font-weight: bold;
-      background: #2a2a2a;
-      color: #ffffff;
-      padding: 0.5rem 1rem;
-      border-radius: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .controls {
+      display: flex;
+      gap: 0.5rem;
     }
     button {
       font-size: 1.2rem;
-      padding: 0.5rem 2rem;
-      margin: 0.25rem;
+      padding: 0.5rem 1.5rem;
       border: none;
       background-color: #388e3c;
       color: white;
@@ -61,24 +67,23 @@
     button:hover {
       background-color: #2e7d32;
     }
-    .controls {
+    #next-button {
       margin-top: 1rem;
     }
   </style>
 </head>
 <body>
-  <div id="counter">
-    手放した回数: <span id="release-count">0</span>
+  <div id="question-box">
+    <div id="question"></div>
+    <button id="next-button">次へ</button>
+  </div>
+
+  <div id="counter-panel">
+    <div id="counter">手放した回数: <span id="release-count">0</span></div>
     <div class="controls">
       <button onclick="adjustCount(-1)">－</button>
       <button onclick="adjustCount(1)">＋</button>
       <button onclick="resetCount()">リセット</button>
-    </div>
-  </div>
-  <div id="app">
-    <div id="question-box">
-      <div id="question"></div>
-      <button id="next-button">次へ</button>
     </div>
   </div>
 
